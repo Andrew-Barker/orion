@@ -13,6 +13,8 @@
 				<router-link to="/camouflages">Camouflages</router-link>
 				<router-link to="/mastery">Mastery</router-link>
 				<router-link to="/requirements">Requirements</router-link>
+				<router-link v-if="!signedIn" to="/signIn">Sign In</router-link>
+				<router-link v-if="signedIn" to="#">Sign Out</router-link>
 			</div>
 			<div class="footer">
 				<router-link to="/settings">Settings</router-link>
@@ -23,12 +25,31 @@
 </template>
 
 <script>
+import firebase from 'firebase/app';
+import 'firebase/auth';
 export default {
+	created() {
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				// user is authenticated
+				// console.log('signed in user', user)
+				this.signedIn = true
+			} else {
+				// user is not authenticated
+				this.signedIn = false
+			}
+		});
+	},
 	props: {
 		show: {
 			type: Boolean,
 			default: false,
 		},
 	},
+	data() {
+		return {
+			signedIn: false,
+		}
+	}
 }
 </script>
