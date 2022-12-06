@@ -15,13 +15,6 @@
 			</div>
 		</div>
 
-		<h4>Open source</h4>
-		<p>
-			Built with <a href="https://vuejs.org/">Vue</a>, hosted on
-			<a href="https://vercel.com/">Vercel</a> and analytics by
-			<a href="https://plausible.io/">Plausible</a>. The code to this site is available on
-			<a href="https://github.com/carlssonemil/orion">GitHub</a>.
-		</p>
 
 		<h4>Previous trackers</h4>
 		<p>Looking for camouflage trackers for the previous Call of Duty games going back to 2019?</p>
@@ -37,13 +30,6 @@
 				<h5>{{ tracker.title }}</h5>
 			</a>
 		</div>
-
-		<h4>Support me</h4>
-		<p>
-			You can support me by
-			<a href="https://www.buymeacoffee.com/emilcarlsson">buying me a beer</a> 🍺, it'd be greatly
-			appreciated!
-		</p>
 	</div>
 </template>
 

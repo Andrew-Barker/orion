@@ -95,43 +95,91 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .modal-header {
+::v-deep[data-camo='poly'] .modal-header {
+	background-image: $polyatomic-gradient;
+}
+
+::v-deep[data-camo='orion'] .modal-header {
 	background-image: $orion-gradient-alt;
 }
 
-.bars {
-	bottom: 0;
-	left: 0;
-	overflow: hidden;
-	position: fixed;
-	user-select: none;
-	width: 100%;
-	z-index: 10;
 
-	.progress {
-		background: $elevation-4-color;
-		display: block;
-		height: 35px;
-		position: relative;
+[data-camo='poly'] {
+	
+	.bars {
+		bottom: 35px;
+		left: 0;
+		overflow: hidden;
+		position: fixed;
+		user-select: none;
 		width: 100%;
-
-		.bar {
-			background-image: $orion-gradient-alt;
+		z-index: 10;
+	
+		.progress {
+			background: $elevation-4-color;
 			display: block;
-			height: 100%;
-			transition: $transition;
+			height: 35px;
+			position: relative;
+			width: 100%;
+	
+			.bar {
+				background-image: $polyatomic-gradient;
+				display: block;
+				height: 100%;
+				transition: $transition;
+			}
+	
+			label {
+				font-size: 12px;
+				left: 50%;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				white-space: nowrap;
+	
+				span {
+					font-weight: 600;
+				}
+			}
 		}
-
-		label {
-			font-size: 12px;
-			left: 50%;
-			position: absolute;
-			transform: translate(-50%, -50%);
-			top: 50%;
-			white-space: nowrap;
-
-			span {
-				font-weight: 600;
+	}
+}
+[data-camo='orion'] {
+	
+	.bars {
+		bottom: 0;
+		left: 0;
+		overflow: hidden;
+		position: fixed;
+		user-select: none;
+		width: 100%;
+		z-index: 10;
+	
+		.progress {
+			background: $elevation-4-color;
+			display: block;
+			height: 35px;
+			position: relative;
+			width: 100%;
+	
+			.bar {
+				background-image: $orion-gradient-alt;
+				display: block;
+				height: 100%;
+				transition: $transition;
+			}
+	
+			label {
+				font-size: 12px;
+				left: 50%;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				white-space: nowrap;
+	
+				span {
+					font-weight: 600;
+				}
 			}
 		}
 	}

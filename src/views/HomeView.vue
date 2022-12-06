@@ -2,9 +2,7 @@
 	<div class="container">
 		<AlertComponent style="margin-bottom: 30px">
 			This tracker is currently under development and more content will be added continuously during
-			the coming weeks. Please report any bugs or issues by emailing me at
-			<a href="mailto:hello@emilcarlsson.se">hello@emilcarlsson.se</a>, or opening issues on
-			<a href="https://github.com/carlssonemil/orion/issues/new">GitHub</a>. Thanks and good luck
+			the coming weeks. Please report any bugs or issues. Thanks and good luck
 			with the grind! ✌
 		</AlertComponent>
 
@@ -38,7 +36,23 @@
 		<WeaponsComponent :weapons="filteredWeapons" :favorites="favorites" />
 
 		<ProgressComponent
+			:progress="polyProgress"
+			data-camo="poly"
+			label="Polyatomic progress"
+			tooltip="Progress towards the Polyatomic camouflage">
+			<template #modal-header>Polyatomic unlocked! 👏🥳</template>
+			<template #modal-body>
+				<p>
+					Congratulations on finishing the Polyatomic camouflage grind! It's been a long ride! You first
+					started tracking your grind here
+					<b>{{ daysSinceStart }} days ago</b> on
+					{{ new Date(getBeganGrind).toLocaleDateString('en-US') }}.
+				</p>
+			</template>
+		</ProgressComponent>
+		<ProgressComponent
 			:progress="orionProgress"
+			data-camo="orion"
 			label="Orion progress"
 			tooltip="Progress towards the Orion camouflage">
 			<template #modal-header>Orion unlocked! 👏🥳</template>
@@ -48,12 +62,6 @@
 					started tracking your grind here
 					<b>{{ daysSinceStart }} days ago</b> on
 					{{ new Date(getBeganGrind).toLocaleDateString('en-US') }}.
-				</p>
-				<p style="margin-top: 15px; font-size: 14px; color: #aaa">
-					If you liked this tracker, show your appreciation by spreading the word about it and if
-					you're feeling generous please consider
-					<a href="https://www.buymeacoffee.com/emilcarlsson" target="_blank">buying me a beer</a>
-					as a thanks. Hope I see you on the battlefield! Cheers! 🍺
 				</p>
 			</template>
 		</ProgressComponent>
@@ -173,6 +181,42 @@ export default {
 				})
 				.sort((a, b) => b.completedPercentage - a.completedPercentage)
 				.splice(0, requiredWeapons)
+
+			// Count the amount of camouflages completed for the most progress weapons
+			const totalCamouflagesCompleted = mostProgressedWeapons.reduce((a, b) => a + b.completed, 0)
+
+			// Count the required amount of camouflages to complete the Orion camouflage
+			const requiredCamouflages = mostProgressedWeapons.reduce((a, b) => {
+				return a + Object.keys(b.progress).length
+			}, 0)
+
+			return roundToTwoDecimals((totalCamouflagesCompleted / requiredCamouflages) * 100)
+		},
+		polyProgress() {
+			// Set the amount of required weapons to complete the Orion camouflage
+			const requiredWeapons = this.weapons.filter((weapon) => !weapon.dlc).length
+
+			
+
+			// Sort and filter out the weapons with the most progress
+			const mostProgressedWeapons = this.weapons
+				.map((weapon) => {
+					const mutableWeaponJson = JSON.stringify(weapon)
+					const mutableWeapon = JSON.parse(mutableWeaponJson)
+					delete mutableWeapon.progress.Polyatomic
+					let totalCamouflages = Object.keys(mutableWeapon.progress).length
+					let completedCamouflages = Object.values(mutableWeapon.progress).reduce((a, b) => a + b, 0)
+
+					return {
+						...mutableWeapon,
+						completed: Object.values(mutableWeapon.progress).reduce((a, b) => a + b, 0),
+						completedPercentage: completedCamouflages / totalCamouflages,
+					}
+				})
+				.sort((a, b) => b.completedPercentage - a.completedPercentage)
+				.splice(0, requiredWeapons)
+
+			// const updatedWeaponProgress = mostProgressedWeapons.map((weapon))
 
 			// Count the amount of camouflages completed for the most progress weapons
 			const totalCamouflagesCompleted = mostProgressedWeapons.reduce((a, b) => a + b.completed, 0)

@@ -1,6 +1,5 @@
 <template>
 	<div id="app">
-		<NoticeComponent />
 		<NavigationComponent @toggleMobileNavigation="toggleMobileNavigation" />
 		<MobileNavigationComponent
 			:show="showMobileNavigation"
@@ -31,14 +30,12 @@ import { useStore } from '@/stores/store'
 import FooterComponent from '@/components/layout/FooterComponent.vue'
 import MobileNavigationComponent from '@/components/layout/MobileNavigationComponent.vue'
 import NavigationComponent from '@/components/layout/NavigationComponent.vue'
-import NoticeComponent from './components/NoticeComponent.vue'
 
 export default {
 	components: {
 		FooterComponent,
 		MobileNavigationComponent,
 		NavigationComponent,
-		NoticeComponent,
 	},
 
 	data() {

@@ -28,6 +28,7 @@
 
 		<ProgressComponent
 			:progress="masteryProgress"
+			data-camo="orion"
 			label="Mastery progress"
 			tooltip="Progress towards completing all mastery challenges">
 			<template #modal-header>Mastery challenges completed 👏🥳</template>
@@ -37,12 +38,6 @@
 					started tracking your grind here
 					<b>{{ daysSinceStart }} days ago</b> on
 					{{ new Date(getBeganGrind).toLocaleDateString('en-US') }}.
-				</p>
-				<p style="margin-top: 15px; font-size: 14px; color: #aaa">
-					If you liked this tracker, show your appreciation by spreading the word about it and if
-					you're feeling generous please consider
-					<a href="https://www.buymeacoffee.com/emilcarlsson" target="_blank">buying me a beer</a>
-					as a thanks. Hope I see you on the battlefield! Cheers! 🍺
 				</p>
 			</template>
 		</ProgressComponent>
