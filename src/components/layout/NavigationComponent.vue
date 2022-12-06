@@ -9,9 +9,9 @@
 			<router-link to="/camouflages">Camouflages</router-link>
 			<router-link to="/mastery">Mastery</router-link>
 			<router-link v-if="!signedIn" to="/signIn">Sign In</router-link>
-			<router-link to="#" class="icon settings" content="Sign Out" v-tippy="{ placement: 'bottom' }">
+			<a v-if="signedIn" @click="signOut()" class="icon settings" style="cursor: pointer;" content="Sign Out" v-tippy="{ placement: 'bottom' }">
 				Sign Out
-			</router-link>
+			</a>
 			<router-link to="/settings" class="icon settings" content="Settings" v-tippy="{ placement: 'bottom' }">
 				<IconComponent name="cog" />
 			</router-link>
@@ -41,5 +41,15 @@ export default {
 			signedIn: false,
 		}
 	},
+	methods: {
+		signOut() {
+			console.log('attempt to sign out user')
+			firebase.auth().signOut().then(() => {
+				// Sign-out successful.
+			}).catch((error) => {
+				// An error happened.
+			});
+		}
+	}
 }
 </script>

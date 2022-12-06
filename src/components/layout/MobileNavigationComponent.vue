@@ -14,7 +14,7 @@
 				<router-link to="/mastery">Mastery</router-link>
 				<router-link to="/requirements">Requirements</router-link>
 				<router-link v-if="!signedIn" to="/signIn">Sign In</router-link>
-				<router-link v-if="signedIn" to="#">Sign Out</router-link>
+				<router-link v-if="signedIn" to="#" @click="signOut()">Sign Out</router-link>
 			</div>
 			<div class="footer">
 				<router-link to="/settings">Settings</router-link>
@@ -49,6 +49,15 @@ export default {
 	data() {
 		return {
 			signedIn: false,
+		}
+	},
+	methods: {
+		signOut() {
+			firebase.auth().signOut().then(() => {
+				// Sign-out successful.
+			}).catch((error) => {
+				// An error happened.
+			});
 		}
 	}
 }
