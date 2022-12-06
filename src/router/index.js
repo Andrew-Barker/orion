@@ -45,6 +45,11 @@ const router = new VueRouter({
 			name: 'settings',
 			component: () => import('../views/SettingsView.vue'),
 		},
+		{
+			path: '/signIn',
+			name: 'signIn',
+			component: () => import('../views/SignIn.vue'),
+		},
 	],
 })
 

@@ -8,6 +8,8 @@ import weaponRequirements from '../data/weaponRequirements'
 import masteryRequirements from '../data/masteryRequirements'
 import camouflageRequirements from '../data/camouflageRequirements'
 import camouflageNameChanges from '../data/camouflageNameChanges'
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 const token = import.meta.env.MODE === 'production' ? 'orion' : 'orion-dev'
 
@@ -90,21 +92,47 @@ export const useStore = defineStore({
 		},
 
 		getStoredProgress() {
-			const storage = localStorage.getItem(token)
+			firebase.auth().onAuthStateChanged(user => {
+				if (user) {
+					// user is authenticated
+					console.log('signed in user read data', user)
+					firebase.database().ref('/mw2-progress/' + user.uid).once('value').then((snapshot) => {
+						console.log('snapshot', snapshot)
+						var storage = (snapshot.val());
 
-			if (!storage) {
-				this.setWeapons()
-				this.setFilters()
-				return
-			}
+						if (!storage) {
+							this.setWeapons()
+							this.setFilters()
+							return
+						}
 
-			const { weapons, filters, beganGrind, favorites, preferences } = JSON.parse(storage)
+						const { weapons, filters, beganGrind, favorites, preferences } = JSON.parse(storage)
 
-			if (weapons) this.setWeapons(weapons)
-			if (filters) this.setFilters(filters)
-			if (beganGrind) this.beganGrind = beganGrind
-			if (favorites) this.setFavorites(favorites)
-			if (preferences) this.setPreferences(preferences)
+						if (weapons) this.setWeapons(weapons)
+						if (filters) this.setFilters(filters)
+						if (beganGrind) this.beganGrind = beganGrind
+						if (favorites) this.setFavorites(favorites)
+						if (preferences) this.setPreferences(preferences)
+					});
+				} else {
+					// user is not authenticated
+					const storage = localStorage.getItem(token)
+
+					if (!storage) {
+						this.setWeapons()
+						this.setFilters()
+						return
+					}
+
+					const { weapons, filters, beganGrind, favorites, preferences } = JSON.parse(storage)
+
+					if (weapons) this.setWeapons(weapons)
+					if (filters) this.setFilters(filters)
+					if (beganGrind) this.beganGrind = beganGrind
+					if (favorites) this.setFavorites(favorites)
+					if (preferences) this.setPreferences(preferences)
+				}
+			});
 		},
 
 		storeProgress() {
@@ -118,17 +146,41 @@ export const useStore = defineStore({
 					preferences: this.preferences,
 				})
 			)
+			this.saveToFirebase()
 		},
 
 		resetProgress() {
 			localStorage.removeItem(token)
 			this.setWeapons()
 			this.beganGrind = null
+			firebase.auth().onAuthStateChanged(user => {
+				if (user) {
+					// user is authenticated
+					console.log('signed in user', user)
+					firebase.database().ref('mw2-progress/' + user.uid).remove()
+				}
+			});
 
 			Vue.notify({
 				type: 'success',
 				title: 'Progress successfully reset!',
 			})
+		},
+
+		saveToFirebase() {
+			firebase.auth().onAuthStateChanged(user => {
+				if (user) {
+					// user is authenticated
+					console.log('signed in user in store', user)
+					firebase.database().ref('mw2-progress/' + user.uid).set(JSON.stringify({
+						weapons: this.weapons,
+						filters: this.filters,
+						beganGrind: this.beganGrind || new Date(),
+						favorites: this.favorites,
+						preferences: this.preferences,
+					}));
+				}
+			});
 		},
 
 		toggleFavorite({ type, name }) {

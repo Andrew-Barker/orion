@@ -9,10 +9,7 @@
 		<div class="filter-container">
 			<FiltersComponent :options="filterOptions" :show-info="true">
 				<template #info>
-					<IconComponent
-						name="question-circle"
-						fill="white"
-						v-tippy="{ placement: 'bottom' }"
+					<IconComponent name="question-circle" fill="white" v-tippy="{ placement: 'bottom' }"
 						:content="'You only need to complete the number of base guns there are for each category to earn the Platinum camouflage challenge. For example, the Assault Rifles requires a total of 8 Gold camouflages to unlock the Platinum camouflage challenge for all weapons in that category. Press this icon to read more.'"
 						@click="$router.push('/requirements')" />
 					<div class="mobile">
@@ -35,10 +32,7 @@
 
 		<WeaponsComponent :weapons="filteredWeapons" :favorites="favorites" />
 
-		<ProgressComponent
-			:progress="polyProgress"
-			data-camo="poly"
-			label="Polyatomic progress"
+		<ProgressComponent :progress="polyProgress" data-camo="poly" label="Polyatomic progress"
 			tooltip="Progress towards the Polyatomic camouflage">
 			<template #modal-header>Polyatomic unlocked! 👏🥳</template>
 			<template #modal-body>
@@ -50,10 +44,7 @@
 				</p>
 			</template>
 		</ProgressComponent>
-		<ProgressComponent
-			:progress="orionProgress"
-			data-camo="orion"
-			label="Orion progress"
+		<ProgressComponent :progress="orionProgress" data-camo="orion" label="Orion progress"
 			tooltip="Progress towards the Orion camouflage">
 			<template #modal-header>Orion unlocked! 👏🥳</template>
 			<template #modal-body>
@@ -72,6 +63,8 @@
 import { mapState } from 'pinia'
 import { useStore } from '@/stores/store'
 import { groupBy, daysBetweenDates, roundToTwoDecimals } from '@/utils/utils'
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 import AlertComponent from '@/components/AlertComponent.vue'
 import FiltersComponent from '@/components/FiltersComponent.vue'
@@ -88,6 +81,17 @@ export default {
 		ProgressComponent,
 		LayoutToggleComponent,
 		FavoritesToggleComponent,
+	},
+
+	created() {
+		firebase.auth().onAuthStateChanged(user => {
+			if (user) {
+				// user is authenticated
+				// console.log('signed in user', user)
+			} else {
+				// user is not authenticated
+			}
+		});
 	},
 
 	data() {
@@ -196,7 +200,7 @@ export default {
 			// Set the amount of required weapons to complete the Orion camouflage
 			const requiredWeapons = this.weapons.filter((weapon) => !weapon.dlc).length
 
-			
+
 
 			// Sort and filter out the weapons with the most progress
 			const mostProgressedWeapons = this.weapons
