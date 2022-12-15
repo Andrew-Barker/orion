@@ -124,4 +124,9 @@ export default {
 		level: '7',
 		challenge: '15 hipfire kills',
 	},
+    'Aztec': {
+        weapon: 'Chimera',
+        level: '9',
+        challenge: '20 hipfire kills',
+    },
 }

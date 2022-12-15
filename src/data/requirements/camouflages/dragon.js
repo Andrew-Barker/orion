@@ -79,4 +79,9 @@ export default {
 		level: '10',
 		challenge: '30 one-shot kills',
 	},
+    'Diabolical': {
+        weapon: 'Chimera',
+        level: '15',
+        challenge: '10 double kills',
+    },
 }

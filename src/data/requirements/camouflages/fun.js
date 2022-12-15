@@ -49,4 +49,9 @@ export default {
 		level: '26',
 		challenge: '30 kills while crouched',
 	},
+    'Snow Leopard': {
+        weapon: 'Chimera',
+        level: '17',
+        challenge: '15 kills from behind',
+    },
 }

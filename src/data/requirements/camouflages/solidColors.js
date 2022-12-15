@@ -64,4 +64,9 @@ export default {
 		level: '28',
 		challenge: '10 double kills',
 	},
+    'Charcoal': {
+        weapon: 'Chimera',
+        level: '2',
+        challenge: '50 kills',
+    },
 }
